@@ -53,7 +53,6 @@ function Kancolle() {
   useEffect(() => {
     const fetchData = async () => {
       let res = await axios("/entry");
-      console.log(res.data);
       setSrc(res.data);
     };
     fetchData();

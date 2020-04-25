@@ -21,7 +21,13 @@
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
     <script>
       (function () {
-        window.postMessage = (m) => window.postMessage(m);
+        window._postMessage = window.postMessage;
+        window.postMessage = (...m) => {
+          if (m[1] === "http://osapi.dmm.com") {
+            window.postMessage(...m);
+          }
+          window._postMessage(...m);
+        };
       })();
     </script>
     <!--
