@@ -26,6 +26,21 @@
           window._postMessage(...m);
         };
       })();
+      // https://stackoverflow.com/questions/46167604/ios-html-disable-double-tap-to-zoom
+      (function () {
+        var lastTouchEnd = 0;
+        document.addEventListener(
+          "touchend",
+          function (event) {
+            var now = new Date().getTime();
+            if (now - lastTouchEnd <= 300) {
+              event.preventDefault();
+            }
+            lastTouchEnd = now;
+          },
+          false
+        );
+      })();
     </script>
     <!--
       Notice the use of %PUBLIC_URL% in the tags above.
