@@ -67,8 +67,6 @@ function Kancolle() {
     }
   }, [height]);
 
-  console.log(height - gameHeight * scale);
-
   return (
     <div
       css={css`
