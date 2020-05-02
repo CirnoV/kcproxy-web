@@ -1,6 +1,6 @@
 /** @jsx jsx */
 import { css, jsx } from "@emotion/core";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 
 const getWidth = () => window.innerWidth;
@@ -48,7 +48,9 @@ function getAdjustZoomFactor(width: number, height: number): number {
 
 function Kancolle() {
   let [width, height] = useViewport();
-  let scale = getAdjustZoomFactor(width, height);
+  let [safeAreaBottom, setSafeAreaBottom] = useState<number>(0);
+  let scale = getAdjustZoomFactor(width, height - safeAreaBottom);
+  let safeAreaChecker = useRef<HTMLDivElement | null>(null);
   let [src, setSrc] = useState<string>();
   useEffect(() => {
     const fetchData = async () => {
@@ -57,15 +59,25 @@ function Kancolle() {
     };
     fetchData();
   }, []);
+  useEffect(() => {
+    if (safeAreaChecker.current) {
+      let bottom =
+        parseInt(getComputedStyle(safeAreaChecker.current).marginBottom) || 0;
+      setSafeAreaBottom(bottom);
+    }
+  }, [height]);
+
+  console.log(height - gameHeight * scale);
 
   return (
     <div
       css={css`
-        width: 100vw;
-        height: 60vw; /* 100/60 = 1.6667 */
-        max-height: 100vh;
-        max-width: 166.67vh; /* 5/3 = 1.6667 */
+        width: ${gameWidth * scale}px;
+        height: ${gameHeight * scale}px;
         margin: auto;
+        margin-bottom: ${(height - gameHeight * scale) / 2 >= safeAreaBottom
+          ? "auto"
+          : `${safeAreaBottom}px`};
         position: absolute;
         top: 0;
         bottom: 0; /* vertical center */
@@ -73,6 +85,14 @@ function Kancolle() {
         right: 0; /* horizontal center */
       `}
     >
+      <div
+        ref={safeAreaChecker}
+        css={css`
+          display: none;
+          position: absolute;
+          bottom: env(safe-area-inset-bottom);
+        `}
+      />
       <div
         css={css`
           display: flex;
