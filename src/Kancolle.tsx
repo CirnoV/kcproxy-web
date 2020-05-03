@@ -62,7 +62,7 @@ function Kancolle() {
   useEffect(() => {
     if (safeAreaChecker.current) {
       let bottom =
-        parseInt(getComputedStyle(safeAreaChecker.current).marginBottom) || 0;
+        parseInt(getComputedStyle(safeAreaChecker.current).bottom) || 0;
       setSafeAreaBottom(bottom);
     }
   }, [height]);
@@ -81,6 +81,9 @@ function Kancolle() {
         bottom: 0; /* vertical center */
         left: 0;
         right: 0; /* horizontal center */
+        -webkit-user-select: none;
+        -webkit-tap-highlight-color: transparent;
+        -webkit-touch-callout: none;
       `}
     >
       <div

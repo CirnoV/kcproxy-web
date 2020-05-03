@@ -23,10 +23,10 @@ html {
 body {
   background-color: black;
   margin: 0;
-  /* https://stackoverflow.com/questions/46167604/ios-html-disable-double-tap-to-zoom */
-  touch-action: manipulation;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right)
+    env(safe-area-inset-bottom) env(safe-area-inset-left);
 }
 
 /**
